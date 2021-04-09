@@ -9,7 +9,7 @@ fn main() {
 
     let file_contents = files::read_file(filename);
 
-    let root_node = huffman::get_tree(&file_contents);
+    let mut root_node = huffman::generate_tree(&file_contents);
 
-    println!("Read file {}\nHuffman Tree Root Freq: {}", filename, root_node.freq);
+    huffman::tree_to_codes(&mut root_node);
 }
