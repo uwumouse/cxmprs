@@ -67,9 +67,11 @@ fn write_header(count_table: &CharMap, file: &mut File) {
 fn write_compressed(data: Vec<u8>, file: &mut File) {
     match file.write_all(
         &[
-            &[31], // US (unit separator), separates header & data
+            
+            &[0], // NULL Byte defines end of header data
+            &[31], // US (unit separator), separates header & data 
             &data[..],
-            &[3], // EOT (End Of Text)
+            &[3], // EOT (End Of Text) for whole file
         ]
         .concat(),
     ) {
