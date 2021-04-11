@@ -9,16 +9,16 @@ pub fn write(
     init_contents: &String,
     codes_table: &CodeTable,
     count_table: &CharMap,
-) -> u64 {
+) -> (u64, String) {
     let new_filename = change_ext(init_filename);
-    let mut out_file = File::create(new_filename).unwrap();
+    let mut out_file = File::create(&new_filename).unwrap();
 
     let out_data = gen_out_data(init_contents, codes_table);
 
     write_header(count_table, &mut out_file);
     write_compressed(out_data, &mut out_file);
 
-    return out_file.metadata().unwrap().len();
+    return (out_file.metadata().unwrap().len(), new_filename.clone());
 }
 
 // Replaces original file extension with new one

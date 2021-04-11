@@ -31,35 +31,34 @@ pub fn gen_count_table(content: &String) -> CharMap {
 }
 
 // Goes through tree untill find leaf node and saves code for this char ino codes table
-pub fn assign_codes(node: &Box<Node>, codes_table: &mut CodeTable, mut code: U8BitVec) {
+pub fn assign_codes(node: &Box<Node>, codes_table: &mut CodeTable, code: U8BitVec) {
     // Only leaf nodes have values
     if let Some(val) = &node.val {
         codes_table.insert(val.clone(), code);
     } else {
         // Go to left and try to find leaf node there
         if let Some(ref left) = node.left {
+            let mut left_code = code.clone();
+            left_code.extend_from_raw_slice(&[0]);
             // But add 0 since turned to left
-            code.extend_from_raw_slice(&[0]);
-            assign_codes(left, codes_table, code.clone());
+            assign_codes(left, codes_table, left_code.clone());
         }
         // Same as left, but add 1 since went to the right
         if let Some(ref right) = node.right {
-            code.extend_from_raw_slice(&[1]);
-            assign_codes(right, codes_table, code.clone());
+            let mut right_code = code.clone();
+            right_code.extend_from_raw_slice(&[1]);
+            assign_codes(right, codes_table, right_code.clone());
         }
     }
 }
 
 fn nodes_into_tree(mut nodes: Vec<Box<Node>>) -> Box<Node> {
-
     while nodes.len() > 1 {
         // Descending sorting
         nodes.sort_by(|a, b| (&(b.freq)).cmp(&(a.freq)));
-        
         // Get two node with least frequency
         let n1 = nodes.pop().unwrap();
         let n2 = nodes.pop().unwrap();
-        
         let mut parent = Box::new(Node::new(n1.freq + n2.freq, None));
         parent.right = Some(n1);
         parent.left = Some(n2);
@@ -96,7 +95,8 @@ fn to_bytes_vec(data_bits: U8BitVec) -> Vec<u8> {
     let data_vec = data_bits.into_vec();
     let len = data_vec.len();
     let mut bytes: Vec<u8> = vec![];
-    let base: u8 = 2; // Save base to use .pow func
+    let base: u8 = 2; 
+    // Save base to use .pow func
     // Current part if bits
     // step for this will be 8
     let mut i = 0;
