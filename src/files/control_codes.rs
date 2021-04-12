@@ -1,4 +1,3 @@
-pub const NULL: u8 = 0;
 // Group Separator. Separates entries in header. <char><freq><GS><char><freq>...
 pub const GS: u8 = 29;
 // Unit Separator. Separates header and compressed data

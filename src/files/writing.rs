@@ -69,10 +69,8 @@ fn write_compressed(data: Vec<u8>, file: &mut File) {
     match file.write_all(
         &[
             
-            &[NULL],
             &[US],
             &data[..],
-            // &[EOT],
         ]
         .concat(),
     ) {

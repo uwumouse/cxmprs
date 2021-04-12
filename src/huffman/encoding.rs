@@ -1,4 +1,5 @@
 use crate::huffman::structures::Node;
+use crate::files::control_codes::EOT;
 use bitvec::prelude::*;
 use std::collections::HashMap;
 
@@ -27,7 +28,7 @@ pub fn gen_count_table(content: &String) -> CharMap {
         *count_table.entry(ch).or_insert(0) += 1;
     }
 
-    *count_table.entry(3 as char).or_insert(0) += 1;
+    *count_table.entry(EOT as char).or_insert(0) += 1;
 
     return count_table;
 }
@@ -81,6 +82,8 @@ pub fn gen_out_data(file_contents: &String, codes_table: &CodeTable) -> Vec<u8> 
 
         add_code(&mut out_bits, codes_table, ch);
     }
+
+    add_code(&mut out_bits, codes_table, EOT as char);
 
     return to_bytes_vec(out_bits);
 }
