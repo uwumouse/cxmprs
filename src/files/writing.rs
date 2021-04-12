@@ -1,4 +1,5 @@
 use crate::huffman::encoding::*;
+use crate::files::control_codes::*;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
@@ -51,7 +52,7 @@ fn write_header(count_table: &CharMap, file: &mut File) {
             &[
                 &[*ch as u8],
                 &freq_bytes[..],
-                &[29] // GS (Group separator) separates char and it freq from other ones in header
+                &[GS]
             ].concat()
         ) {
             Ok(_) => {}
@@ -68,10 +69,10 @@ fn write_compressed(data: Vec<u8>, file: &mut File) {
     match file.write_all(
         &[
             
-            &[0], // NULL Byte defines end of header data
-            &[31], // US (unit separator), separates header & data 
+            &[NULL],
+            &[US],
             &data[..],
-            &[3], // EOT (End Of Text) for whole file
+            &[EOT],
         ]
         .concat(),
     ) {
