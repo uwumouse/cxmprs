@@ -1,12 +1,12 @@
 use bitvec::prelude::*;
 use files::reading::*;
 use files::writing::*;
-use huffman::encoding::*;
 use std::collections::HashMap;
 use std::env;
 use std::fs::File;
 use std::time::{SystemTime};
-use std::fs;
+use huffman::encoding::*;
+use huffman::structures::*;
 
 mod files;
 mod huffman;

@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+use bitvec::prelude::*;
 
 #[derive(Clone, Debug)]
 pub struct Node {
@@ -16,3 +18,8 @@ impl Node {
         }
     }
 }
+
+
+pub type U8BitVec = BitVec<LocalBits, u8>;
+pub type CodeTable = HashMap<char, U8BitVec>;
+pub type CharMap = HashMap<char, usize>;

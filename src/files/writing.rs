@@ -1,3 +1,4 @@
+use crate::huffman::structures::*;
 use crate::huffman::encoding::*;
 use crate::files::control_codes::*;
 use std::fs::File;

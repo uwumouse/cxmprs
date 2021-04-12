@@ -1,11 +1,8 @@
-use crate::huffman::structures::Node;
+use crate::huffman::structures::*;
 use crate::files::control_codes::EOT;
 use bitvec::prelude::*;
 use std::collections::HashMap;
 
-pub type U8BitVec = BitVec<LocalBits, u8>;
-pub type CodeTable = HashMap<char, U8BitVec>;
-pub type CharMap = HashMap<char, usize>;
 
 pub fn gen_tree(count_table: &CharMap) -> Box<Node> {
     // Get list of leaf nodes based on character map
