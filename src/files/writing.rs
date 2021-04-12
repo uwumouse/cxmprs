@@ -72,7 +72,7 @@ fn write_compressed(data: Vec<u8>, file: &mut File) {
             &[NULL],
             &[US],
             &data[..],
-            &[EOT],
+            // &[EOT],
         ]
         .concat(),
     ) {

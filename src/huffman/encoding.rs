@@ -27,6 +27,8 @@ pub fn gen_count_table(content: &String) -> CharMap {
         *count_table.entry(ch).or_insert(0) += 1;
     }
 
+    *count_table.entry(3 as char).or_insert(0) += 1;
+
     return count_table;
 }
 
@@ -59,6 +61,7 @@ fn nodes_into_tree(mut nodes: Vec<Box<Node>>) -> Box<Node> {
         // Get two node with least frequency
         let n1 = nodes.pop().unwrap();
         let n2 = nodes.pop().unwrap();
+        
         let mut parent = Box::new(Node::new(n1.freq + n2.freq, None));
         parent.right = Some(n1);
         parent.left = Some(n2);
@@ -75,6 +78,7 @@ pub fn gen_out_data(file_contents: &String, codes_table: &CodeTable) -> Vec<u8> 
     let content_chars: Vec<char> = file_contents.chars().collect();
 
     for ch in content_chars {
+
         add_code(&mut out_bits, codes_table, ch);
     }
 

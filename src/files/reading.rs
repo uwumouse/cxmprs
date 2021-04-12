@@ -19,3 +19,7 @@ pub fn read_file(filename: &String) -> String {
 
     return file_contents;
 }
+
+
+pub fn read_binary(filename: &String) {
+}
