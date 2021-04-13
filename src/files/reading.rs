@@ -21,5 +21,5 @@ pub fn read_file(filename: &String) -> String {
 }
 
 
-pub fn read_binary(filename: &String) {
-}
+// pub fn read_binary(filename: &String) {
+// }

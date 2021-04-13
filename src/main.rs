@@ -6,7 +6,7 @@ use std::env;
 use std::fs::File;
 use std::time::{SystemTime};
 use huffman::encoding::*;
-use huffman::structures::*;
+use huffman::structure::*;
 
 mod files;
 mod huffman;
@@ -31,13 +31,6 @@ fn main() {
     // Counting compression metrics
     let (size, new_filename) = write(filename, &file_contents, &codes_table, &count_table);
 
-    let mut prog_duration: std::time::Duration = std::time::Duration::new(1, 1);
-
-    match SystemTime::now().duration_since(prog_start) {
-        Ok(n) => prog_duration = n,
-        _ => {}
-    }
-
     let init_size = File::open(filename).unwrap().metadata().unwrap().len();
     let compression: f32 = 100.0 - (size as f32 / init_size as f32) * 100.0;
 
@@ -49,5 +42,9 @@ fn main() {
         size,
         compression.round()
     );
-    println!("Took {:.3} seconds.", prog_duration.as_secs_f32());
+
+    match SystemTime::now().duration_since(prog_start) {
+        Ok(n) => println!("Took {:.3} seconds.", n.as_secs_f32()),
+        _ => {}
+    }
 }
