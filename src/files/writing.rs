@@ -1,9 +1,9 @@
+use std::io::prelude::*;
+use std::fs::File;
+use std::path::Path;
 use crate::huffman::structure::*;
 use crate::huffman::encoding::*;
 use crate::files::control_codes::*;
-use std::fs::File;
-use std::io::prelude::*;
-use std::path::Path;
 
 
 pub fn write(
@@ -69,7 +69,6 @@ fn write_header(count_table: &CharMap, file: &mut File) {
 fn write_compressed(data: Vec<u8>, file: &mut File) {
     match file.write_all(
         &[
-            
             &[US],
             &data[..],
         ]

@@ -5,7 +5,6 @@ use std::collections::HashMap;
 use std::env;
 use std::fs::File;
 use std::time::{SystemTime};
-use huffman::encoding::*;
 use huffman::structure::*;
 
 mod files;
@@ -21,7 +20,9 @@ fn main() {
     let filename = &args[1];
     let file_contents = read_file(filename);
 
+
     let count_table = gen_count_table(&file_contents);
+
     let root_node = gen_tree(&count_table);
     let mut codes_table: CodeTable = HashMap::new();
 
