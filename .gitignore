@@ -1,3 +1,4 @@
 /target
 *.cxmp
 build
+text/dummy.txt
