@@ -2,3 +2,4 @@
 *.cxmp
 build
 text/dummy.txt
+Cargo.lock
