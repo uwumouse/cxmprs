@@ -11,7 +11,7 @@ pub fn write(
     init_contents: &String,
     codes_table: &CodeTable,
     count_table: &CharMap,
-) -> (u64, String) {
+) -> (String, u64) {
     let new_filename = change_ext(init_filename);
     let mut out_file = File::create(&new_filename).unwrap();
 
@@ -20,13 +20,14 @@ pub fn write(
     write_header(count_table, &mut out_file);
     write_compressed(out_data, &mut out_file);
 
-    return (out_file.metadata().unwrap().len(), new_filename.clone());
+    return (new_filename.clone(), out_file.metadata().unwrap().len());
 }
 
 // Replaces original file extension with new one
-fn change_ext(init_filename: &String) -> String {
+// Return just a file name, without actual path
+fn change_ext(init_path: &String) -> String {
     let mut filename = String::from(
-        Path::new(init_filename)
+        Path::new(init_path)
             .file_stem()
             .unwrap()
             .to_str()

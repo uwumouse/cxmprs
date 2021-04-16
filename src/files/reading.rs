@@ -2,14 +2,18 @@ use std::fs;
 use std::process;
 use std::io::ErrorKind;
 
-pub fn read_file(filename: &String) -> String {
-    let file_contents = match fs::read_to_string(filename) {
+pub fn read_string(path: &String) -> String {
+    let file_contents = match fs::read_to_string(path) {
         Ok(c) => c,
         Err(err) => match err.kind() {
             ErrorKind::NotFound => {
-                println!("File {} not found", filename);
+                println!("File {} not found", path);
                 process::exit(1);
             },
+            ErrorKind::InvalidData => {
+                println!("Only UTF-8 text format are readable.");
+                process::exit(1);
+            }
             _ => {
                 println!("Unknown error occured:\n{}", err);
                 process::exit(1);
@@ -21,5 +25,18 @@ pub fn read_file(filename: &String) -> String {
 }
 
 
-// pub fn read_binary(filename: &String) {
-// }
+pub fn read_compressed(path: &String) -> Vec<u8> {
+    return match fs::read(path) {
+        Ok(c) => c,
+        Err(err) => match err.kind() {
+            ErrorKind::NotFound => {
+                println!("File {} not found", path);
+                process::exit(1);
+            },
+            _ => {
+                println!("Unknown error occured:\n{}", err);
+                process::exit(1);
+            }
+        }
+    };
+}
