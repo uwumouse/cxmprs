@@ -3,21 +3,21 @@ use std::fs::File;
 use std::path::Path;
 use crate::huffman::structure::*;
 use crate::huffman::encoding::*;
-use crate::files::control_codes::*;
+use crate::control_codes::*;
 
 
 pub fn write(
     init_filename: &String,
     init_contents: &String,
-    codes_table: &CodeTable,
-    count_table: &CharMap,
+    codes_table: &CodesTable,
+    charmap: &CharMap,
 ) -> (String, u64) {
     let new_filename = change_ext(init_filename);
     let mut out_file = File::create(&new_filename).unwrap();
 
     let out_data = gen_out_data(init_contents, codes_table);
 
-    write_header(count_table, &mut out_file);
+    write_header(charmap, &mut out_file);
     write_compressed(out_data, &mut out_file);
 
     return (new_filename.clone(), out_file.metadata().unwrap().len());
@@ -39,8 +39,8 @@ fn change_ext(init_path: &String) -> String {
 }
 
 // Writes data about characters and their frequency
-fn write_header(count_table: &CharMap, file: &mut File) {
-    for (ch, freq) in count_table.iter() {
+fn write_header(charmap: &CharMap, file: &mut File) {
+    for (ch, freq) in charmap.iter() {
         let mut freq_bytes = vec![];
 
         // Removing bytes with the value from number byte-representation 

@@ -6,9 +6,11 @@ use std::env;
 use std::fs::File;
 use std::time::{SystemTime};
 use huffman::structure::*;
+use huffman::decoding::*;
 
 mod files;
 mod huffman;
+mod control_codes;
 
 
 fn main() {
@@ -33,9 +35,9 @@ fn main() {
         compression.round()
     );
 
-    println!("Compressed\nDecompressing...");
-
-    decompress(&new_filename);
+    // !For development
+    // decompress(&new_filename);
+ 
 
     match SystemTime::now().duration_since(prog_start) {
         Ok(n) => println!("Took {:.3} seconds.", n.as_secs_f32()),
@@ -44,21 +46,21 @@ fn main() {
 }
 
 
+// Compresses data, returns name of the new file and size of the new file.
 fn compress(path: &String) -> (String, u64) {
     let file_contents = read_string(path);
 
-    let count_table = gen_count_table(&file_contents);
+    let charmap = gen_charmap(&file_contents);
+    let root_node = gen_tree(&charmap);
 
-    let root_node = gen_tree(&count_table);
-    let mut codes_table: CodeTable = HashMap::new();
-
+    let mut codes_table: CodesTable = HashMap::new();
     assign_codes(&root_node, &mut codes_table, bitvec![LocalBits, u8;]);
 
-    // Counting compression metrics
-    return write(path, &file_contents, &codes_table, &count_table);
+    return  write(path, &file_contents, &codes_table, &charmap);
 }
 
 
 fn decompress(path: &String) {
-    let bytes = decompress(path);
+    let bytes = read_compressed(path);
+    let charmap = header_to_charmap(&bytes);
 }

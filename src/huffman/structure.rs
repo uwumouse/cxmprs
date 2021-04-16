@@ -1,9 +1,9 @@
 use std::collections::HashMap;
 use bitvec::prelude::*;
-use crate::files::control_codes::EOT;
+use crate::control_codes::EOT;
 
 
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct Node {
     pub val: Option<char>,
     pub freq: usize,
@@ -21,14 +21,17 @@ impl Node {
     }
 }
 
+/** Represents bit for character */
 pub type U8BitVec = BitVec<LocalBits, u8>;
-pub type CodeTable = HashMap<char, U8BitVec>;
+/** Hashmap with format  char -> binary code */
+pub type CodesTable = HashMap<char, U8BitVec>;
+/** Hashmap with format char -> frequency */
 pub type CharMap = HashMap<char, usize>;
 
 //#region Tree
-pub fn gen_tree(count_table: &CharMap) -> Box<Node> {
+pub fn gen_tree(charmap: &CharMap) -> Box<Node> {
     // Get list of leaf nodes based on character map
-    let nodes: Vec<Box<Node>> = count_table
+    let nodes: Vec<Box<Node>> = charmap
         .into_iter()
         .map(|(ch, freq)| Box::new(Node::new(*freq, Some(*ch))))
         .collect();
@@ -59,7 +62,7 @@ fn nodes_into_tree(mut nodes: Vec<Box<Node>>) -> Box<Node> {
 
 //#region Count Table
 // Returns a hashmap with every character and it's frequency
-pub fn gen_count_table(content: &String) -> CharMap {
+pub fn gen_charmap(content: &String) -> CharMap {
     let mut count_table: CharMap = HashMap::new();
     // List of every char in string
     let chars: Vec<char> = content.chars().collect();
@@ -75,7 +78,7 @@ pub fn gen_count_table(content: &String) -> CharMap {
 }
 
 // Goes through tree untill finds a leaf node and saves code for this char in a codes table
-pub fn assign_codes(node: &Box<Node>, codes_table: &mut CodeTable, code: U8BitVec) {
+pub fn assign_codes(node: &Box<Node>, codes_table: &mut CodesTable, code: U8BitVec) {
 	// Only leaf nodes have values
 	if let Some(val) = &node.val {
 		codes_table.insert(val.clone(), code);

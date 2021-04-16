@@ -1,9 +1,9 @@
 use bitvec::prelude::*;
 use crate::huffman::structure::*;
-use crate::files::control_codes::EOT;
+use crate::control_codes::EOT;
 
 // Generate final vector of bytes
-pub fn gen_out_data(file_contents: &String, codes_table: &CodeTable) -> Vec<u8> {
+pub fn gen_out_data(file_contents: &String, codes_table: &CodesTable) -> Vec<u8> {
 	let mut out_bits: U8BitVec = bitvec![LocalBits, u8;];
 
 	let content_chars: Vec<char> = file_contents.chars().collect();
