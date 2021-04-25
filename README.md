@@ -22,4 +22,4 @@ Using:
 > Build the program before. See `Bulding` section.
 
 ## Decompression
-Feature in development...
+Feature in development 4ever. Too many shit to fix I don't want to think about :)
